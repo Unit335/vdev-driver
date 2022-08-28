@@ -16,6 +16,7 @@ make enable
 ```sh
 make disable
 ```
+vd_devices.ko создает устройства, vd_drv.ko выполняет функции драйвера.
 
 make test собирает программу test с небольшим набором команд для тестирования интерфейса /dev/vdev-X
 
