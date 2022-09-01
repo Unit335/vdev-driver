@@ -14,17 +14,18 @@
 
 #include <asm/page.h>
 #include <asm-generic/memory_model.h>
+#include <asm-generic/io.h>
 
 #define RDWR    0x11
 #define RDONLY  0x01
 #define WRONLY  0x10
+
 #undef pr_fmt
 #define pr_fmt(fmt) "%s: %s: " fmt, KBUILD_MODNAME, __func__
 
 struct pcdev_platform_data {
     int size;
 };
-
 
 /* Private data of a single device */
 struct pcdev_private_data {

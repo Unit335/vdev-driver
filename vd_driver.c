@@ -23,7 +23,6 @@ ssize_t get_value (struct device *dev,
         pr_info("null reference by dev_data, %p\n", dev_data);
         return 0;
     }    
-    //pr_info("%hhu\n", dev_data->buffer[dev_data->position] );
     return sysfs_emit(buf, "%hhu\n", dev_data->buffer[dev_data->position] );;
 }
 
@@ -115,7 +114,7 @@ int pcd_platform_driver_probe (struct platform_device *pdev) {
     dev_data->pdata.size = pdata->size;
     pr_info("Device size = %d\n", dev_data->pdata.size);
 
-    dev_data->buffer = devm_kzalloc(&pdev->dev, dev_data->pdata.size, GFP_KERNEL);
+    dev_data->buffer = kzalloc(dev_data->pdata.size, GFP_KERNEL);
     if(!dev_data->buffer) {
         pr_info("Cannot allocate memory\n");
         return -ENOMEM;
@@ -156,6 +155,7 @@ int pcd_platform_driver_remove (struct platform_device *pdev) {
     device_destroy(pcdrv_data.class_pcd, dev_data->device_number);
     cdev_del(&dev_data->pcd_cdev);
     pcdrv_data.total_devices--;
+    kfree(dev_data->buffer);
     pr_info("Device removed\n");
     return 0;
 }
