@@ -32,6 +32,41 @@ devtest10932
 
 Программа test также реализует взаимодействие с /dev/vdev-1 для записи и чтения отдельных байтов файла. Варианты write и read проводят запись и чтение одного байта данных, по умолчанию после каждой операции производится сдвиг текущей позиции в файле на количество записанных/прочитанных (в данном случае 1) байт, для отдельного управления позицией в файле необходимо использовать вариант lseek, устанавливающий позицию относительно начала файла. 
 
+Например:
+```
+~$ echo "devtestersdtfghkjnkjpiuikghvmn" | sudo tee /dev/vdev-1
+devtestersdtfghkjnkjpiuikghvmn
+~$ sudo cat /dev/vdev-1
+devtestersdtfghkjnkjpiuikghvmn
+
+~$ sudo ./test 
+
+Options: 
+1 - write
+2 - read
+3 - lseek
+4 - mmap
+5 - exit
+2
+Choose option = 2
+Data = (unsigned int) 100 | (char) d
+...
+Choose option = 3
+Position in bytes from start of file: 
+0
+...
+Choose option = 1
+Enter number (0 - 255) to write: 101
+Done
+...
+Choose option = 3
+Position in bytes from start of file: 
+0
+...
+Choose option = 2
+Data = (unsigned int) 101 | (char) e
+```
+
 ## Интерфейс sysfs
 
 Данные устройств расположены в /sys/class/vd_class в папках вида vdev-X. Атрибуты address и value в папке устройства (например, в /sys/class/vd_class/vdev-1) указывают на сдвиг в байтах относительно начала данных устройств и значение (в формате unsigned int) по этому сдвигу соответственно.  
